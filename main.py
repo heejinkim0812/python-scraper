@@ -1,8 +1,48 @@
-from indeed import get_jobs as get_indeed_jobs
-from stackoverflow import get_jobs as get_so_jobs
-from save import save_to_file
+from flask import Flask, render_template, request, redirect, send_file
+from scraper import get_jobs
+from exporter import save_to_file
 
-indeed_jobs = get_indeed_jobs()
-so_jobs = get_so_jobs()
-jobs = indeed_jobs + so_jobs
-save_to_file(jobs)
+app = Flask("JobScrapper")
+
+db = {}
+
+@app.route("/")
+def home():
+  return render_template("home.html")
+
+
+@app.route("/report")
+def report():
+  word = request.args.get('word')
+  if word:
+    word = word.lower()
+    fromDb = db.get(word)
+    if fromDb:
+      jobs = fromDb
+    else:
+      jobs = get_jobs(word)
+      db[word] = jobs
+  else:
+    return redirect("/")
+  return render_template("report.html", searchingBy=word, resultsNumber=len(jobs), jobs=jobs) #template에 아무 값이나 넘겨줄 수 있음
+
+
+@app.route("/export")
+def export():
+  try: 
+    word = request.args.get("word")
+    if not word:
+      raise Exception()
+    word = word.lower()
+    jobs = db.get(word)
+    if not jobs:
+      raise Exception()
+    save_to_file(jobs)
+    return send_file("jobs.csv", attachment_filename=f'jobs[{word}].csv', as_attachment=True)
+
+  except:
+    return redirect("/")
+
+
+    
+app.run(host = "0.0.0.0")
