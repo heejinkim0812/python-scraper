@@ -3,17 +3,15 @@ from scraper import get_jobs
 from exporter import save_to_file
 
 app = Flask("JobScrapper")
-
 db = {}
 
 @app.route("/")
 def home():
   return render_template("home.html")
 
-
 @app.route("/report")
 def report():
-  word = request.args.get('word')
+  word = request.args.get("word")
   if word:
     word = word.lower()
     fromDb = db.get(word)
@@ -24,13 +22,12 @@ def report():
       db[word] = jobs
   else:
     return redirect("/")
-  return render_template("report.html", searchingBy=word, resultsNumber=len(jobs), jobs=jobs) #template에 아무 값이나 넘겨줄 수 있음
-
+  return render_template("report.html", searchingBy=word, resultsNumber=len(jobs), jobs=jobs)
 
 @app.route("/export")
 def export():
-  try: 
-    word = request.args.get("word")
+  try:
+    word= request.args.get("word")
     if not word:
       raise Exception()
     word = word.lower()
@@ -39,10 +36,7 @@ def export():
       raise Exception()
     save_to_file(jobs)
     return send_file("jobs.csv", attachment_filename=f'jobs[{word}].csv', as_attachment=True)
-
   except:
     return redirect("/")
-
-
     
 app.run(host = "0.0.0.0")
