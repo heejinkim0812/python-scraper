@@ -3,12 +3,13 @@
 A simple job search site using Web scraping with python  
 Used Python, Requests, BeautifulSoup, Flask.  
 <br/>
-![2](https://user-images.githubusercontent.com/71063574/151845318-bf5f9d8d-a5a5-462b-8aa5-cbf0767ad90a.jpg)
+![1](https://user-images.githubusercontent.com/71063574/152183553-d31dddaa-2548-4cd6-98ff-e3bf22dbd4f6.jpg)
+![2](https://user-images.githubusercontent.com/71063574/152183568-1a4589b5-e7b8-4c0f-9f5b-ee8e03f1df57.jpg)
 
 <br/>
 
 ## Feature List
 
-- When users enter a search word, it scratches and visualizes related job search information from the StackOverflow.
-- "Title, Company, Location, Apply-site" information are visualized as tables.
-- Information can be downloaded as a csv file.
+- When users enter a keyword, it scratches and visualizes related job search information from the Jobkorea("https://www.jobkorea.co.kr/").
+- "Title, Company, Location, Duedate, Apply" information are visualized as tables.
+- Information can be downloaded as a CSV file.
